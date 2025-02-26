@@ -1,0 +1,12 @@
+
+###Player
+    # 1. controls a Rocket ship that appears at the bottom of the screen.
+    # 2. can move the ship right and left using the arrow keys and shoot bullets using spacebar.
+    # 3. can shoot and destroy aliens.
+    # 4. Looses ship if hit by an alien or alien reaches where player is.
+    # 5. If they loose 3 ships the game ends.
+
+###Aliens
+    # 1. At game start they appear in a fleet and fill the sky and move across and down the screen.
+    # 2. If all are destroyed by player a new fleet appears which is faster and fills the screen.
+    # 3. If it hits a player ship or reachs bottom of the screen player looses their ship.
