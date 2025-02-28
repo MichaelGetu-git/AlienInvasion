@@ -2,9 +2,9 @@ import sys
 
 import pygame
 
-from shap import Shap
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 
 class AlienInvasion:
@@ -14,7 +14,7 @@ class AlienInvasion:
 
         self.clock = pygame.time.Clock()
         self.settings = Settings()
-
+        self.bullets = pygame.sprite.Group()
         self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
@@ -22,7 +22,6 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
-        self.shap = Shap(self)
 
 
 
@@ -32,14 +31,23 @@ class AlienInvasion:
             self._check_events()
             self._update_screen()
             self.ship.update()
+            self._update_bullets()
+            print(len(self.bullets))
             self.clock.tick(60)
+
+    def _update_bullets(self):
+        self.bullets.update()
+
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <=0:
+                self.bullets.remove(bullet)
 
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
-        self.shap.blitme()
-
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         pygame.display.flip()
 
     def _check_events(self):
@@ -62,6 +70,14 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+
+    def _fire_bullet(self):
+
+        new_bullet = Bullet(self)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            self.bullets.add(new_bullet)
 
     def _check_keyup_events(self,event):
         if event.key == pygame.K_RIGHT:
